@@ -3,11 +3,6 @@ name: Build Ahal DES APK
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "main.py"
-      - "buildozer.spec"
-      - ".github/workflows/build.yml"
 
 jobs:
   build:
@@ -22,16 +17,15 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             git zip unzip openjdk-17-jdk \
             autoconf libtool pkg-config \
             zlib1g-dev libncurses5-dev \
-            libncursesw5-dev libtinfo5 \
-            cmake libffi-dev libssl-dev \
-            libltdl-dev
+            libncursesw5-dev cmake libffi-dev \
+            libssl-dev
 
       - name: Install Buildozer
         run: |
@@ -41,7 +35,7 @@ jobs:
       - name: Build APK
         run: buildozer android debug
 
-      - name: Upload APK
+      - name: Save APK
         uses: actions/upload-artifact@v4
         with:
           name: Ahal-DES-APK
